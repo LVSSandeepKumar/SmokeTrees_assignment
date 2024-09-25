@@ -64,4 +64,20 @@ export const createUser = async(req,res) => {
         console.log("Error in createUser controller", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
+};
+
+//Function to get a User's addresses
+export const getUserAddresses = async(req,res) => {
+    try {
+        const {username} = req.params;
+        const user = await User.findOne({username}).populate("addresses", "address");
+        if(!user) {
+            res.status(403).json({ message: "Authorization Error - Invalid Username" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        //Error Handling
+        console.log("Error in getUserAddresses controller", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 }
